@@ -113,12 +113,12 @@ export class CodeServer {
         this.entry,
         "--extensions-dir",
         path.join(dir, "extensions"),
+        "--auth",
+        "none",
         ...this.args,
         // Using port zero will spawn on a random port.
         "--bind-addr",
         "127.0.0.1:0",
-        "--auth",
-        "none",
         // Setting the XDG variables would be easier and more thorough but the
         // modules we import ignores those variables for non-Linux operating
         // systems so use these flags instead.
