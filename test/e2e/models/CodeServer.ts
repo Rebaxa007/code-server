@@ -64,7 +64,7 @@ export class CodeServer {
     // and being accessed at port.host i.e. 1337.localhost:80
     if (process.env.USE_PROXY && process.env.USE_PROXY === "1") {
       const uri = new URL(address)
-      return `http://${uri.port}.${uri.hostname}:8000/ide/`
+      return `http://${uri.hostname}:8000/${uri.port}/ide/`
     }
 
     return address
