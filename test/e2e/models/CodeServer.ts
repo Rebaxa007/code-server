@@ -246,7 +246,7 @@ export class CodeServerPage {
 
     // Only reload editor if auth is not enabled. Otherwise we'll get stuck
     // reloading the login page.
-    if (this.codeServer.authEnabled()) {
+    if (!this.codeServer.authEnabled()) {
       await this.reloadUntilEditorIsReady()
     }
   }
