@@ -244,7 +244,7 @@ export class CodeServerPage {
     this.codeServer.logger.info(`navigating to ${to}`)
     await this.page.goto(to.toString(), { waitUntil: "networkidle" })
 
-    // Only reload editor if authenticated. Otherwise we'll get stuck
+    // Only reload editor if auth is not enabled. Otherwise we'll get stuck
     // reloading the login page.
     if (this.codeServer.authEnabled()) {
       await this.reloadUntilEditorIsReady()
