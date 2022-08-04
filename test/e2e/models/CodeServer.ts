@@ -61,7 +61,7 @@ export class CodeServer {
 
     // NOTE@jsjoeio - when enabled, we assume code-server is running
     // via a reverse proxy with something like Caddy
-    // and being accessed at port.host i.e. 1337.localhost:80
+    // and being accessed at host/port i.e. localhost:8000/1337
     if (process.env.USE_PROXY && process.env.USE_PROXY === "1") {
       const uri = new URL(address)
       return `http://${uri.hostname}:8000/${uri.port}/ide/`
