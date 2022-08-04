@@ -524,7 +524,7 @@ jobs:
     name: End-to-end tests behind proxy
     needs: package-linux-amd64
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 25
     env:
       # Since we build code-server we might as well run tests from the release
       # since VS Code will load faster due to the bundling.
