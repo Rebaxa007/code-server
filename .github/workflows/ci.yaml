@@ -503,9 +503,7 @@ jobs:
 
       - name: Install Playwright OS dependencies
         if: steps.playwright-cache.outputs.cache-hit != 'true'
-        run: |
-          ./test/node_modules/.bin/playwright install-deps
-          ./test/node_modules/.bin/playwright install
+        run: sudo npx playwright install-deps 
 
       - name: Run end-to-end tests
         run: yarn test:e2e --global-timeout 840000
@@ -576,9 +574,7 @@ jobs:
 
       - name: Install Playwright OS dependencies
         if: steps.playwright-cache.outputs.cache-hit != 'true'
-        run: |
-          ./test/node_modules/.bin/playwright install-deps
-          ./test/node_modules/.bin/playwright install
+        run: sudo npx playwright install-deps 
 
       - name: Install Caddy
         run: |
