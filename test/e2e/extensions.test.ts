@@ -1,11 +1,12 @@
 import * as path from "path"
 import { test as base } from "@playwright/test"
 import { describe, test, expect } from "./baseFixture"
+import { getMaybeProxiedCodeServer } from "../utils/helpers"
 
 function runTestExtensionTests() {
   // This will only work if the test extension is loaded into code-server.
   test("should have access to VSCODE_PROXY_URI", async ({ codeServerPage }) => {
-    const address = await codeServerPage.address()
+    const address = await getMaybeProxiedCodeServer(codeServerPage)
 
     await codeServerPage.executeCommandViaMenus("code-server: Get proxy URI")
 

@@ -7,7 +7,7 @@ import * as util from "util"
 import { logError, normalize, plural } from "../../../src/common/util"
 import { onLine } from "../../../src/node/util"
 import { PASSWORD, workspaceDir } from "../../utils/constants"
-import { idleTimer, tmpdir } from "../../utils/helpers"
+import { getMaybeProxiedCodeServer, getProxiedCodeServer, idleTimer, tmpdir } from "../../utils/helpers"
 
 interface CodeServerProcess {
   process: cp.ChildProcess
@@ -62,10 +62,10 @@ export class CodeServer {
     // NOTE@jsjoeio - when enabled, we assume code-server is running
     // via a reverse proxy with something like Caddy
     // and being accessed at host/port i.e. localhost:8000/1337
-    if (process.env.USE_PROXY && process.env.USE_PROXY === "1") {
-      const uri = new URL(address)
-      return `http://${uri.hostname}:8000/${uri.port}/ide/`
-    }
+    // if (process.env.USE_PROXY && process.env.USE_PROXY === "1") {
+    // const uri = new URL(address)
+    // return `http://${uri.hostname}:8000/${uri.port}/ide/`
+    // }
 
     return address
   }
@@ -242,7 +242,8 @@ export class CodeServerPage {
    * editor to become available.
    */
   async navigate(endpoint = "/") {
-    const noramlizedUrl = normalize((await this.codeServer.address()) + endpoint, true)
+    const address = await getMaybeProxiedCodeServer(this.codeServer)
+    const noramlizedUrl = normalize(address + endpoint, true)
     const to = new URL(noramlizedUrl)
 
     this.codeServer.logger.info(`navigating to ${to}`)

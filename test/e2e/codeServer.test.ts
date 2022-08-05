@@ -3,6 +3,7 @@ import { promises as fs } from "fs"
 import * as os from "os"
 import * as path from "path"
 import * as util from "util"
+import { getMaybeProxiedCodeServer } from "../utils/helpers"
 import { describe, test, expect } from "./baseFixture"
 import { CodeServer } from "./models/CodeServer"
 
@@ -48,7 +49,8 @@ describe("code-server", [], {}, () => {
     const url = codeServerPage.page.url()
     // We use match because there may be a / at the end
     // so we don't want it to fail if we expect http://localhost:8080 to match http://localhost:8080/
-    expect(url).toMatch(await codeServerPage.address())
+    const address = await getMaybeProxiedCodeServer(codeServerPage)
+    expect(url).toMatch(address)
   })
 
   test("should always see the code-server editor", async ({ codeServerPage }) => {
@@ -92,6 +94,7 @@ describe("code-server", [], {}, () => {
     // domain and can write to the same database.
     const cs = await spawn("4.0.2", dir)
     const address = new URL(await cs.address())
+
     await codeServerPage.navigate("/proxy/" + address.port + "/")
     await codeServerPage.openFile(files[1])
     expect(await codeServerPage.tabIsVisible(files[0])).toBe(false)
