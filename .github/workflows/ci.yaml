@@ -587,21 +587,18 @@ jobs:
       - name: Install Caddy
         if: steps.caddy-cache.outputs.cache-hit != 'true'
         run: |
-          sudo apt install -y debian-keyring debian-archive-keyring apt-transport-https
-          curl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/gpg.key' | sudo gpg --dearmor -o /usr/share/keyrings/caddy-stable-archive-keyring.gpg
-          curl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/debian.deb.txt' | sudo tee /etc/apt/sources.list.d/caddy-stable.list
-          sudo apt update
-          sudo apt install -y caddy
+          gh release download v2.5.2 --repo caddyserver/caddy --pattern "caddy_2.5.2_linux_amd64.tar.gz"
+          tar -xzf caddy_2.5.2_linux_amd64.tar.gz --directory ~/.cache/caddy 
 
       - name: Start Caddy
-        run: sudo caddy start --config ./ci/Caddyfile
+        run: sudo ~/.cache/caddy/caddy start --config ./ci/Caddyfile
 
       - name: Run end-to-end tests
         run: yarn test:e2e:proxy
 
       - name: Stop Caddy
         if: always()
-        run: sudo caddy stop
+        run: sudo ~/.cache/caddy/caddy stop
 
       - name: Upload test artifacts
         if: always()
