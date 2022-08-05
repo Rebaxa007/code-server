@@ -493,16 +493,7 @@ jobs:
         if: steps.cache-yarn.outputs.cache-hit != 'true'
         run: yarn --frozen-lockfile
 
-      - name: Cache Playwright binaries
-        uses: actions/cache@v2
-        id: playwright-cache
-        with:
-          path: |
-            ~/.cache/ms-playwright
-          key: cache-playwright-linux-1.19.2-${{ secrets.PLAYWRIGHT_CACHE_VERSION }}
-
       - name: Install Playwright OS dependencies
-        if: steps.playwright-cache.outputs.cache-hit != 'true'
         run: |
           ./test/node_modules/.bin/playwright install-deps
           ./test/node_modules/.bin/playwright install
@@ -566,16 +557,7 @@ jobs:
         if: steps.cache-yarn.outputs.cache-hit != 'true'
         run: yarn --frozen-lockfile
 
-      - name: Cache Playwright binaries
-        uses: actions/cache@v2
-        id: playwright-cache
-        with:
-          path: |
-            ~/.cache/ms-playwright
-          key: cache-playwright-linux-1.19.2-${{ secrets.PLAYWRIGHT_CACHE_VERSION }}
-
       - name: Install Playwright OS dependencies
-        if: steps.playwright-cache.outputs.cache-hit != 'true'
         run: |
           ./test/node_modules/.bin/playwright install-deps
           ./test/node_modules/.bin/playwright install
