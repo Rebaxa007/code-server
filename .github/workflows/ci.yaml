@@ -576,7 +576,16 @@ jobs:
         if: steps.playwright-cache.outputs.cache-hit != 'true'
         run: sudo npx playwright install-deps 
 
+      - name: Cache Caddy
+        uses: actions/cache@v2
+        id: caddy-cache
+        with:
+          path: |
+            ~/.cache/caddy
+          key: cache-caddy-2.5.2
+
       - name: Install Caddy
+        if: steps.caddy-cache.outputs.cache-hit != 'true'
         run: |
           sudo apt install -y debian-keyring debian-archive-keyring apt-transport-https
           curl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/gpg.key' | sudo gpg --dearmor -o /usr/share/keyrings/caddy-stable-archive-keyring.gpg
