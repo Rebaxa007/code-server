@@ -605,7 +605,7 @@ jobs:
 
       - name: Stop Caddy
         if: always()
-        run: sudo ~/.cache/caddy/caddy stop
+        run: sudo ~/.cache/caddy/caddy stop --config ./ci/Caddyfile
 
       - name: Upload test artifacts
         if: always()
