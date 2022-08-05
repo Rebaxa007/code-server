@@ -138,7 +138,7 @@ export class CodeServer {
           // Set to empty string to prevent code-server from
           // using the existing instance when running the e2e tests
           // from an integrated terminal.
-          VSCODE_IPC_HOOK_CLI: "", 
+          VSCODE_IPC_HOOK_CLI: "",
           PASSWORD,
         },
       })
