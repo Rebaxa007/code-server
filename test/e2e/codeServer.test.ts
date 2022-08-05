@@ -70,7 +70,9 @@ describe("code-server", [], {}, () => {
   test("should migrate state to avoid collisions", async ({ codeServerPage }) => {
     // This can take a very long time in development because of how long pages
     // take to load and we are doing a lot of that here.
-    test.slow()
+    if (process.env.VSCODE_DEV === "1") {
+      test.slow()
+    }
 
     const dir = await codeServerPage.workspaceDir
     const files = [path.join(dir, "foo"), path.join(dir, "bar")]
