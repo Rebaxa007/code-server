@@ -1,5 +1,6 @@
 import * as path from "path"
-import { describe, test } from "./baseFixture"
+import { test as base } from "@playwright/test"
+import { describe, test, expect } from "./baseFixture"
 
 function runTestExtensionTests() {
   // This will only work if the test extension is loaded into code-server.
@@ -8,7 +9,10 @@ function runTestExtensionTests() {
 
     await codeServerPage.executeCommandViaMenus("code-server: Get proxy URI")
 
-    await codeServerPage.page.waitForSelector(`text=${address}/proxy/{{port}}`)
+    const text = await codeServerPage.page.locator(".notification-list-item-message").textContent()
+    // Remove end slash in address
+    const normalizedAddress = address.replace(/\/+$/, "")
+    expect(text).toBe(`${normalizedAddress}/proxy/{{port}}`)
   })
 }
 
@@ -18,6 +22,14 @@ describe("Extensions", flags, {}, () => {
   runTestExtensionTests()
 })
 
-describe("Extensions with --cert", [...flags, "--cert"], {}, () => {
-  runTestExtensionTests()
-})
+if (process.env.USE_PROXY !== "1") {
+  describe("Extensions with --cert", [...flags, "--cert"], {}, () => {
+    runTestExtensionTests()
+  })
+} else {
+  base.describe("Extensions with --cert", () => {
+    base.skip("skipped because USE_PROXY is set", () => {
+      // Playwright will not show this without a function.
+    })
+  })
+}
